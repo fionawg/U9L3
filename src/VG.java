@@ -1,28 +1,30 @@
 import java.util.ArrayList;
 
 public class VG extends LVM{
-    private ArrayList<PV> pv; //add every time PV is created
-    private ArrayList<LV> lv; //add every time LV is created
-    private int freeSpace;
-    private int totalSpace;
+    private String freeSpace;
+    private String totalSpace;
 
-    public VG(String name){
+    public VG(String name, ArrayList<PV> pv, ArrayList<LV> lv){
         super(name);
-        totalSpace = 0;
+        int totalS = 0;
+        String str = pv.get(0).getSize();
+        String unit = str.replaceAll("1234567890", "");
         for (PV p : pv){
-            totalSpace += p.getSize();
+            totalS += Integer.parseInt(p.getSize());
         }
-        freeSpace = totalSpace;
+        int freeS = totalS;
         for (LV l : lv){
-            freeSpace -= l.getSize();
+            freeS -= Integer.parseInt(l.getSize());
         }
+        totalSpace = "" + totalS + unit;
+        freeSpace = "" + freeS + unit;
     }
 
-    public void addPV(){
-
-    }
-
-    public int getFreeSpace(){
+    public String getFreeSpace(){
         return freeSpace;
+    }
+
+    public String getTotalSpace(){
+        return totalSpace;
     }
 }

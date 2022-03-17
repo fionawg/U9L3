@@ -1,8 +1,8 @@
 public class HD {
     private String name;
-    private int size;
+    private String size;
 
-    public HD(String name, int size){
+    public HD(String name, String size){
         this.name = name;
         this.size = size;
     }
@@ -11,7 +11,7 @@ public class HD {
         return name;
     }
 
-    public int getSize(){
+    public String getSize(){
         return size;
     }
 }

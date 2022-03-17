@@ -2,10 +2,10 @@ import java.util.UUID;
 
 public class LVM {
     private UUID uuid;
-    private int size;
+    private String size;
     private String name;
 
-    public LVM(String name, int size){
+    public LVM(String name, String size){
         uuid = UUID.randomUUID();
         this.size = size;
         this.name = name;
@@ -20,7 +20,7 @@ public class LVM {
         return uuid;
     }
 
-    public int getSize(){
+    public String getSize(){
         return size;
     }
 
