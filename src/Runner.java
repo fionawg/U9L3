@@ -21,8 +21,17 @@ public class Runner {
                 command = command.substring(command.indexOf(" ") + 1);
                 if (command.indexOf(" ") != -1){
                     name = command.substring(0, command.indexOf(" "));
-                    command = command.substring(command.indexOf(" ") + 1);
                     size = command;
+                    for (int i = 0; i < hdList.size(); i++){
+                        name = command.substring(0, command.indexOf(" "));
+                        while (name.equals(hdList.get(i).getName())){
+                            System.out.println("Error: that drive is already installed.\n");
+                            System.out.print("cmd# ");
+                            command = scanner.nextLine();
+                            name = command.substring(command.indexOf(" ") + 1, command.indexOf(" "));
+                            size = command;
+                        }
+                    }
                     HD h = new HD(name, size);
                     hdList.add(h);
                     System.out.println("Drive " + name + " installed");
@@ -50,7 +59,12 @@ public class Runner {
                 }
             }
             if (command.equals("pvlist")){
-
+                for (PV p : pvList){
+                    System.out.print("[" + p.getName() + "] " + p.getSize() + " ");
+                    if (true){
+                    }
+                    System.out.println(p.getUuid());
+                }
             }
             System.out.print("\n");
         }
