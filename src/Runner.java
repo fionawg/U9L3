@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Runner {
     public static void main(String[] args) {
         String command = "";
-        String[] split;
+        String[] split = new String[4];
         ArrayList<HD> hdList = new ArrayList<HD>();
         ArrayList<PV> pvList = new ArrayList<PV>();
 
