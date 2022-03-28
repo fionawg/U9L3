@@ -7,6 +7,7 @@ public class Runner {
         String command = "";
         String[] split = new String[4];
         ArrayList<HD> hdList = new ArrayList<HD>();
+        ArrayList<String> hdNames = new ArrayList<String>();
         ArrayList<PV> pvList = new ArrayList<PV>();
 
         Scanner scanner = new Scanner(System.in);
@@ -19,17 +20,22 @@ public class Runner {
 
             //install-drive
             if (split[0].equals("install-drive")){
-                for (int i = 0; i < hdList.size(); i++){
-                    if (hdList.get(i).equals(split[1])){
-                        System.out.println("Error. There is already a drive with the name \"" + split[1] + "\".\n");
-                        System.out.print("cmd# ");
-                        command = scanner.nextLine();
-                        split = command.split(" ");
-                    }
+                while (hdNames.contains(split[1])){
+                    System.out.println("Error. Drive \"" + split[1]+ "\" is already installed.\n");
+                    System.out.print("Enter another name: ");
+                    split[1] = scanner.nextLine();
                 }
                 System.out.println("Drive " + split[1] + " installed");
                 HD hd = new HD(split[1], split[2]);
+                hdNames.add(hd.getName());
                 hdList.add(hd);
+            }
+
+            //list-drives
+            if (split[0].equals("list-drives")){
+                for (HD hd : hdList){
+                    System.out.println(hd.getName() + " [" + hd.getSize() + "]");
+                }
             }
 
             System.out.println();
