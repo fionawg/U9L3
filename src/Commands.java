@@ -55,23 +55,20 @@ public class Commands {
         x.addPV(x);
     }
 
-    public void pvList(String[] split, PV pv){
-        if (split[0].equals("pvlist")) {
-            for (PV x : pv.getPvList()){
-                if (x.getInVG()){
-                    System.out.println(x.getName() + ": [" + x.getVG().getName() + "] [" + x.getSize() + "] [" + x.getUuid() + "]");
-                }
-                else {
-                    System.out.println(x.getName() + ": [" + x.getSize() + "] [" + x.getUuid() + "]");
-                }
+    public void pvList(PV pv){
+        for (PV x : pv.getPvList()){
+            if (x.getInVG()){
+                System.out.println(x.getName() + ": [" + x.getVG().getName() + "] [" + x.getSize() + "] [" + x.getUuid() + "]");
+            }
+            else {
+                System.out.println(x.getName() + ": [" + x.getSize() + "] [" + x.getUuid() + "]");
             }
         }
     }
 
-    //working on this
     public void vgCreate(String[] split, VG vg, PV pv){
         index = -1;
-        if (vg.getVgList().contains(split[1])){
+        if (vg.getVgNames().contains(split[1])){
             System.out.print("Error. VG \"" + split[1]+ "\" is already created.\n");
             return;
         }
@@ -90,45 +87,48 @@ public class Commands {
         }
         System.out.print(split[1] + " created\n");
         VG x = new VG(split[1]);
+        pv.getPvList().get(index).inVG(x);
         vg.addPV(pv);
         vg.addVG(x);
         pv.inVG(x);
     }
 
-    public String[] vgExtend(String[] split, VG vg, PV pv){
-        while (split[0].equals("vgextend")){
-            index = -1;
-            if (!vg.getVgNames().contains(split[1])){
-                System.out.print("Error. \"" + split[1]+ "\" does not exist.\n");
-                break;
-            }
-            if (!pv.getPvNames().contains(split[2])){
-                System.out.print("Error. \"" + split[2]+ "\" does not exist.\n");
-                break;
-            }
-            for (int i = 0; i < pv.getPvList().size(); i++){
-                if (pv.getPvList().get(i).getName().equals(split[2])){
-                    index = i;
-                }
-            }
-            if (pv.getInVG()){
-                System.out.print("Error. \"" + split[1]+ "\" is already part of a VG .\n");
-                break;
-            }
-            System.out.println(split[2] + " was successfully added to " + split[1] + "\n");
-            int index2 = 0;
-            for (int i = 0; i < vg.getVgList().size(); i++){
-                if (vg.getVgList().get(i).getName().equals(split[1])){
-                    index2 = i;
-                }
-            }
-            pv.inVG(vg);
-            vg.addPV(pv.getPvList().get(index));
-            System.out.print("cmd# ");
-            command = scanner.nextLine();
-            split = command.split(" ");
+    //add to pv info
+    public void vgExtend(String[] split, VG vg, PV pv){
+        index = -1;
+        if (!vg.getVgNames().contains(split[1])){
+            System.out.print("Error. \"" + split[1]+ "\" does not exist.\n");
+            return;
         }
-        return split;
+        if (!pv.getPvNames().contains(split[2])){
+            System.out.print("Error. \"" + split[2]+ "\" does not exist.\n");
+            return;
+        }
+        for (int i = 0; i < pv.getPvList().size(); i++){
+            if (pv.getPvList().get(i).getName().equals(split[2])){
+                index = i;
+            }
+        }
+        if (pv.getInVG()){
+            System.out.print("Error. \"" + split[1]+ "\" is already part of a VG .\n");
+            return;
+        }
+        System.out.print(split[2] + " was successfully added to " + split[1] + "\n");
+        int index2 = 0;
+        for (int i = 0; i < vg.getVgList().size(); i++){
+            if (vg.getVgList().get(i).getName().equals(split[1])){
+                index2 = i;
+            }
+        }
+        pv.getPvList().get(index).inVG(vg.getVgList().get(index2));
+        vg.addPV(pv.getPvList().get(index));
+    }
+
+    //vg1: total:[300G] available:[120G] [pv1,pv2] [uuid]
+    public void vgList(VG vg){
+        for (VG x : vg.getVgList()){
+            System.out.println();
+        }
     }
 
 }

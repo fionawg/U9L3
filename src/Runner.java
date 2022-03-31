@@ -30,11 +30,18 @@ public class Runner {
                 commands.pvCreate(split, pv, hd);
             }
             if (split[0].equals("pvlist")){
-                commands.pvList(split, pv);
+                commands.pvList(pv);
             }
             if (split[0].equals("vgcreate")){
                 commands.vgCreate(split, vg, pv);
             }
+            if (split[0].equals("vgextend")){
+                commands.vgExtend(split, vg, pv);
+            }
+            if (split[0].equals("vglist")){
+                commands.vgList(vg);
+            }
+
 
             System.out.println();
         }
