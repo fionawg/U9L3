@@ -5,6 +5,9 @@ public class VG extends LVM{
     private String totalSpace;
     private ArrayList<PV> pv;
     private ArrayList<LV> lv;
+    private static ArrayList<VG> vgList = new ArrayList<VG>();//all vgs
+    private static ArrayList<PV> usedPV = new ArrayList<PV>(); //pvs associated with a vg
+    private static ArrayList<String> vgNames = new ArrayList<String>(); //list of vg names
 
     public VG(String name){
         super(name);
@@ -15,11 +18,17 @@ public class VG extends LVM{
     }
 
     public void addPV(PV x){
+        usedPV.add(x);
         pv.add(x);
     }
 
     public void addLV(LV x){
         lv.add(x);
+    }
+
+    public static void addVG(VG vg){
+        vgNames.add(vg.getName());
+        vgList.add(vg);
     }
 
     public void calculateSpace(){
@@ -35,6 +44,18 @@ public class VG extends LVM{
         }
         totalSpace = "" + totalS + unit;
         freeSpace = "" + freeS + unit;
+    }
+
+    public ArrayList<VG> getVgList(){
+        return vgList;
+    }
+
+    public ArrayList<PV> getUsedPv(){
+        return usedPV;
+    }
+
+    public ArrayList<String> getVgNames(){
+        return vgNames;
     }
 
     public String getFreeSpace(){
