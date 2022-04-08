@@ -82,15 +82,19 @@ public class Commands {
             return;
         }
         if (pv.getInVG()){
-            System.out.print("Error. PV \"" + split[2]+ "\" is associated with a different PV.\n");
+            System.out.print("Error. PV \"" + split[2]+ "\" is associated with a different VG.\n");
             return;
         }
         System.out.print(split[1] + " created\n");
         VG x = new VG(split[1]);
         pv.getPvList().get(index).inVG(x);
         vg.addPV(pv);
+        vg.addUsedPV(pv.getPvList().get(index));
         vg.addVG(x);
         pv.inVG(x);
+        for (PV xs : vg.getUsedPv()){
+            System.out.println(xs.getName());
+        }
     }
 
     //add to pv info

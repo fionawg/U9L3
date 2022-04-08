@@ -17,8 +17,11 @@ public class VG extends LVM{
         lv = new ArrayList<LV>();
     }
 
-    public void addPV(PV x){
+    public static void addUsedPV(PV x){
         usedPV.add(x);
+    }
+
+    public void addPV(PV x){
         pv.add(x);
     }
 
