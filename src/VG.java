@@ -1,18 +1,18 @@
 import java.util.ArrayList;
 
 public class VG extends LVM{
-    private String freeSpace;
-    private String totalSpace;
+    private int freeSpace;
+    private int totalSpace;
     private ArrayList<PV> pv;
     private ArrayList<LV> lv;
-    private static ArrayList<VG> vgList = new ArrayList<VG>();//all vgs
+    private static ArrayList<VG> vgList = new ArrayList<VG>(); //all vgs
     private static ArrayList<PV> usedPV = new ArrayList<PV>(); //pvs associated with a vg
     private static ArrayList<String> vgNames = new ArrayList<String>(); //list of vg names
 
     public VG(String name){
         super(name);
-        freeSpace = "";
-        totalSpace = "";
+        freeSpace = 0;
+        totalSpace = 0;
         pv = new ArrayList<PV>();
         lv = new ArrayList<LV>();
     }
@@ -36,36 +36,44 @@ public class VG extends LVM{
 
     public void calculateSpace(){
         int totalS = 0;
-        String str = pv.get(0).getSize();
-        String unit = str.replaceAll("1234567890", "");
+        String str = "";
+        String numbers = "";
         for (PV p : pv){
-            totalS += Integer.parseInt(p.getSize());
+            str = p.getSize();
+            numbers = str.replaceAll("[^0-9]", "");
+            totalS += Integer.parseInt(numbers);
         }
         int freeS = totalS;
         for (LV l : lv){
-            freeS -= Integer.parseInt(l.getSize());
+            str = l.getSize();
+            numbers = str.replaceAll("[^0-9]", "");
+            freeS -= Integer.parseInt(numbers);
         }
-        totalSpace = "" + totalS + unit;
-        freeSpace = "" + freeS + unit;
+        freeSpace = freeS;
+        totalSpace = totalS;
     }
 
-    public ArrayList<VG> getVgList(){
+    public static ArrayList<VG> getVgList(){
         return vgList;
     }
 
-    public ArrayList<PV> getUsedPv(){
+    public static ArrayList<PV> getUsedPv(){
         return usedPV;
     }
 
-    public ArrayList<String> getVgNames(){
+    public ArrayList<PV> getPV(){
+        return pv;
+    }
+
+    public static ArrayList<String> getVgNames(){
         return vgNames;
     }
 
-    public String getFreeSpace(){
+    public int getFreeSpace(){
         return freeSpace;
     }
 
-    public String getTotalSpace(){
+    public int getTotalSpace(){
         return totalSpace;
     }
 }

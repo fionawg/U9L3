@@ -4,8 +4,7 @@ import java.util.ArrayList;
 public class Runner {
     public static void main(String[] args) {
         String command = "";
-        String[] split = new String[4];
-        int index = -1;
+        String[] split;
 
         Scanner scanner = new Scanner(System.in);
         Commands commands = new Commands();
@@ -18,6 +17,7 @@ public class Runner {
             HD hd = new HD("", "");
             PV pv = new PV("", hd);
             VG vg = new VG("");
+            LV lv = new LV("", "", vg);
 
             if (split[0].equals("install-drive")){
                 hd = new HD(split[1], split[2]);
@@ -30,7 +30,7 @@ public class Runner {
                 commands.pvCreate(split, pv, hd);
             }
             if (split[0].equals("pvlist")){
-                commands.pvList(pv);
+                commands.pvList();
             }
             if (split[0].equals("vgcreate")){
                 commands.vgCreate(split, vg, pv);
@@ -39,9 +39,14 @@ public class Runner {
                 commands.vgExtend(split, vg, pv);
             }
             if (split[0].equals("vglist")){
-                commands.vgList(vg);
+                commands.vgList();
             }
-
+            if (split[0].equals("lvcreate")){
+                commands.lvCreate(split, vg);
+            }
+            if (split[0].equals("lvlist")){
+                commands.lvList();
+            }
 
             System.out.println();
         }

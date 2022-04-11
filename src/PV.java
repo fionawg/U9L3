@@ -41,11 +41,11 @@ public class PV extends LVM{
         return vg;
     }
 
-    public ArrayList<PV> getPvList(){
+    public static ArrayList<PV> getPvList(){
         return pvList;
     }
 
-    public ArrayList<String> getPvNames(){
+    public static ArrayList<String> getPvNames(){
         return pvNames;
     }
 }

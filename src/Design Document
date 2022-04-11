@@ -1,0 +1,116 @@
+HD Class
+    This class is the class for hard drives and is associated with a physical volume.
+    It is not a child class of LVM like most of the other classes.
+
+        //instance variables
+        private String name - the name of the hard drive
+        private String size - the size of the hard drive
+        private boolean withPV - shows if the hard drive is associated with a physical volume
+        private static ArrayList<HD> hdList = new ArrayList<HD>() - contains all the hard drives created
+        private static ArrayList<String> hdNames = new ArrayList<String>() - contains the names of all the hard drives
+        private PV physicalVolume - the PV that the HD is associated with
+
+        //methods
+        public void associatedPV(PV pv) - sets associated PV to physicalVolume
+        public static void addHD(HD hd) - adds hd to hdList and hdNames
+        other methods are getter methods
+
+
+PV Class
+    This class is the class for physical volumes and is associated with a hard drive.
+    Along with that, PVs can also be added to a volume group.
+    This class extends my LVM class.
+
+        //instance variables
+        private HD hardDrive - the associated hard drive
+        private boolean inVG - shows if the PV is associated with a volume group
+        private VG vg - the VG that the PV is associated with
+        private static ArrayList<PV> pvList = new ArrayList<PV>() - contains all the PVs created
+        private static ArrayList<String> pvNames = new ArrayList<String>() - contains all the names of the PVs
+
+        //methods
+        public static void addPV(PV pv) - adds pv to pvList and pvNames
+        public void inVG(VG vg) - sets inVG to true and sets vg to vg
+        public void associatedHD(HD hd) - sets associated HD to hardDrive
+        other methods are getter methods
+
+
+VG Class
+    This class is the class for volume groups and is associated with PVs and logical volumes.
+    You can get the size of a VG by adding up all its associated PVs.
+    You should be able to get the free space by looking at the size of the LVs and subtracting that from the size.
+    This class extends my LVM class.
+
+        //instance variables
+        private int freeSpace - the available space of a VG
+        private int totalSpace - the total space of a VG (sum of PV sizes)
+        private ArrayList<PV> pv - list of PVs associated with the VG
+        private ArrayList<LV> lv - list of LVs associated with the VG
+        private static ArrayList<VG> vgList = new ArrayList<VG>() - list of all the VGs created
+        private static ArrayList<PV> usedPV = new ArrayList<PV>() - list of PVs that are associated with a VG
+        private static ArrayList<String> vgNames = new ArrayList<String>() - list of VG names
+
+        //methods
+        public static void addUsedPV(PV x) - when a PV becomes associated with a VG, it gets added to usedPV
+        public void addPV(PV x) - adds the associated PV
+        public void addLV(LV x) - adds the associated LV
+        public static void addVG(VG vg) - adds vg to vgList and vgNames
+        public void calculateSpace() - calculates the freeSpace and totalSpace from the pv and lv
+        other methods are getter methods
+
+
+LV class
+    This class is the logical volume class.
+    It is associated with VGs.
+    The sum of the size of the LVs associated with a VG subtracted from the size of the VG is equal to the free space in a VG.
+    This class extends my LVM class.
+
+        //instance methods
+        private VG vg - the associated VG
+        private static ArrayList<String> lvNames = new ArrayList<String>() - list of LV names
+        private static ArrayList<LV> lvList = new ArrayList<LV>() - list of LVs created
+
+        //methods
+        public static void addLV(LV x) - adds x to lvList and lvNames
+        public void inVG(VG vg) - sets this.vg to vg (associated VG)
+        other methods are getter methods
+
+
+LVM class
+    This class is the parent class of most of my other classes (only exception is HD).
+
+        //instance variables
+        private UUID uuid - generates an UUID for everything that needs one (LV, PV, VG)
+        private String size - the size
+        private String name - the name
+
+        //methods
+        all the methods are getter methods for the instance variables
+
+
+Commands class
+    This class doesn't have a constructor or instance variables.
+    It contains one method for each command.
+
+        //methods
+            public void installDrive(String[] split, HD hd) - installs a new hard drive
+            public void listDrives(HD hd) - lists all the hard drives
+            public void pvCreate(String[] split, PV pv, HD hd) - creates a new physical volume
+            public void pvList() - lists all the physical volumes
+            public void vgCreate(String[] split, VG vg, PV pv) - creates a volume group
+            public void vgExtend(String[] split, VG vg, PV pv) - adds physical volume to a volume group
+            public void vgList() - lists all the vgs
+            public void lvCreate(String[] split, VG vg) - creates a logical volume
+            public void lvList() - lists all the lvs
+
+
+Runner class
+    This is my main class.
+
+    1. creates variables (command and split)
+        - command is the input from the user
+        - split is that command but in an array and each word is a different element
+    2. create scanner and commands class
+    3. while loop that continues until the user types "exit"
+        - in the while loop are if statements that correlate to each command
+            - if the condition is true, the corresponding method from the commands class is called
